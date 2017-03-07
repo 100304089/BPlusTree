@@ -34,7 +34,50 @@ public abstract class Node {
     
     protected void propagate(DataNode dnode, Node right){
         
+        if (parent == null){
+            
+            TreeNode newparent = new TreeNode(maxsize);
+            
+            newparent.data.add(dnode);
+            newparent.pointer.add(this);
+            newparent.pointer.add(right);
+            
+            this.setParent(newparent);
+            right.setParent(newparent);
+            
+            
+        } else {
+            
+            if (! parent.isFull()){
+                
+                boolean dnodeinserted = false;
+                
+                for (int i = 0; !dnodeinserted && i < parent.data.size(); i++){
+                    
+                    if (((DataNode) parent.data.elementAt(i)).inOrder(dnode))
+                        
+                        parent.data.add(i, dnode);
+                    
+                        ((TreeNode) parent).pointer.add(i+1, right);
+                        
+                        dnodeinserted = true;
+                    
+                }
+                
+            }
+            
+        }
         
+    }
+    
+    public int size(){
+        return data.size();
+    }
+    
+    Node(int degree){
+        parent = null;
         
+        data = new Vector();
+        maxsize = degree;
     }
 }
